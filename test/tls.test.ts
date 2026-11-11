@@ -87,7 +87,7 @@ const getOverHttp2 = (
   });
 
 describe("TLS（TLS_CERT と TLS_KEY が揃ったとき）", () => {
-  it("TLS の口で HTTP/2 で答える", async () => {
+  it("TLS のポートで HTTP/2 で答える", async () => {
     const answer = await getOverHttp2("/");
     expect(answer.protocol).toBe("h2");
     expect(answer.status).toBe(200);
@@ -106,7 +106,7 @@ describe("TLS（TLS_CERT と TLS_KEY が揃ったとき）", () => {
     expect(line).toMatch(/^\S+ 127\.0\.0\.1 "GET \/__version\?log-remote HTTP\/2\.0" 200 /);
   });
 
-  it("TLS の口は HTTP/1.1 でも答える", async () => {
+  it("TLS のポートは HTTP/1.1 でも答える", async () => {
     const status = await new Promise<number>((resolve, reject) => {
       const request = https.get(
         `${secureOrigin}/__version`,
@@ -121,7 +121,7 @@ describe("TLS（TLS_CERT と TLS_KEY が揃ったとき）", () => {
     expect(status).toBe(200);
   });
 
-  it("平文の口も開いたまま", async () => {
+  it("平文のポートも開いたまま", async () => {
     const res = await send(viewer.base, "/__version");
     expect(res.status).toBe(200);
   });

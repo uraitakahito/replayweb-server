@@ -1,5 +1,5 @@
 /**
- * 試験の中で Node server を立てる。127.0.0.1 の空いた口で待ち、名前は代役が引く
+ * 試験の中で Node server を立てる。127.0.0.1 の空いたポートで待ち、名前は代役が引く
  * (STORE_HOST だけが 127.0.0.1 に答える)。
  */
 import { parseBucketUrl } from "../../src/config.js";
@@ -14,7 +14,7 @@ import { STORE_HOST } from "./store.js";
 export interface TestViewer {
   readonly server: ViewerServer;
   readonly addresses: ListenAddresses;
-  /** http://127.0.0.1:<平文の口> */
+  /** http://127.0.0.1:<平文のポート> */
   readonly base: string;
   readonly dns: StubLookup;
   /** logError に出た行 */
