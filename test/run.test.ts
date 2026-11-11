@@ -142,7 +142,7 @@ describe("起動の誤り（FATAL の 1 行と exit 1）", () => {
     expect(fake.exits).toEqual([1]);
   });
 
-  it("口を開けない", async () => {
+  it("ポートを開けない", async () => {
     const taken = http.createServer();
     await new Promise<void>((resolve) => taken.listen(0, "127.0.0.1", resolve));
     try {
@@ -180,7 +180,7 @@ describe("起きてよいこと", () => {
     expect((await send(baseOf(viewer!), "/wacz/x")).status).toBe(502);
   });
 
-  it("TLS の 2 つが揃えば、平文の口に加えて TLS の口も開く", async () => {
+  it("TLS の 2 つが揃えば、平文のポートに加えて TLS のポートも開く", async () => {
     const certificate = makeSelfSignedCertificate();
     const fake = fakeProcess({ TLS_CERT: certificate.certPath, TLS_KEY: certificate.keyPath });
     const viewer = await start(fake);
@@ -188,7 +188,7 @@ describe("起きてよいこと", () => {
     expect((await send(baseOf(viewer!), "/__version")).status).toBe(200);
   });
 
-  it("TLS が無ければ平文の口だけ", async () => {
+  it("TLS が無ければ平文のポートだけ", async () => {
     const viewer = await start(fakeProcess({}));
     expect(viewer?.addresses.secure).toBeUndefined();
   });
@@ -214,7 +214,7 @@ describe("止め方（PID 1 で受ける合図）", () => {
 });
 
 describe("root から降りる", () => {
-  it("root で起きたら、口を開いた後に node の利用者へ降りる", async () => {
+  it("root で起きたら、ポートを開いた後に node の利用者へ降りる", async () => {
     const fake = fakeProcess({}, { uid: 0 });
     const viewer = await start(fake);
     expect(viewer).toBeDefined();

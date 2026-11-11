@@ -5,7 +5,7 @@
  * - query は書いたとおりに渡す。
  * - 要求の header は、範囲と条件の物だけを渡す (Range・If-Range・If-Match・If-None-Match・
  *   If-Modified-Since・If-Unmodified-Since)。Authorization は渡さない —— 匿名で読む。ブラウザが
- *   この口へ送った資格は、保管庫の資格ではない。Host は保管庫の host:port になる。
+ *   このエンドポイントへ送った資格は、保管庫の資格ではない。Host は保管庫の host:port になる。
  * - 答えの status・header・本文はそのまま返す (206・Content-Range・Accept-Ranges・
  *   `application/wacz+zip`)。貯めない。wabac は WACZ 1 本を 60 回ほどの範囲の読みで開く。
  *   外すのは接続ごとの header だけ (HTTP/2 では送れず、HTTP/1.1 は Node が組み直す)。
