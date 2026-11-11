@@ -20,8 +20,10 @@ allowBuilds:
 # **足すなら、なぜ・いつ外すかを一緒に書くこと。**
 #
 #   GHSA-gh4j-gqv2-49f6 — fast-xml-parser <5.7.0 の XMLBuilder が、コメントと CDATA の
-#     終端 (`-->` と `]]>`) をエスケープしない。replaywebpage 2.5.0 → @webrecorder/wabac
-#     2.27.2 → fast-xml-parser ^4.5.4 の経路で入っている。
+#     終端 (`-->` と `]]>`) をエスケープしない。lockfile では replaywebpage 2.5.0 →
+#     @webrecorder/wabac 2.27.2 → fast-xml-parser 4.5.7 の経路で入っている。配っている sw.js は
+#     これとは別に、上流 (replayweb.page v2.5.0) の yarn.lock が固定した wabac.js 2.27.1・
+#     fast-xml-parser 4.5.5 で build されている (sw.js の先頭の `wabac.js 2.27.1`)。
 #
 #     直せない理由: 修正は 5.7.0 からで、4 系には来ていない。wabac は最新の 2.27.3 でも
 #     ^4.5.4 を求め、replaywebpage も最新の 2.5.3 で wabac ^2.27.2 のまま (2026-09-13 に
@@ -49,7 +51,25 @@ allowBuilds:
 #
 #     外す条件: これらの親が 11.0.1 以上を求める版を出したとき (update で直る)。確かめ方は
 #     `pnpm why minimatch`。
+#
+#   GHSA-474x-hrwr-fgx4 — fast-xml-parser <=5.11.2 の stopNodes の読み直しで、CPU を O(n²) 使う
+#     (low)。GHSA-gh4j-gqv2-49f6 と同じ replaywebpage → @webrecorder/wabac → fast-xml-parser の
+#     経路で入っている。
+#
+#     直せない理由: 修正は 5.12.0 からで、4 系には来ていない。image が配るのは tarball に焼き込まれた
+#     sw.js (wabac.js 2.27.1・fast-xml-parser 4.5.5) で、lockfile を進めても配る物は変わらない。
+#     最新の replaywebpage 2.5.4 も fast-xml-parser 5.11.2 で build されている (2026-11-12 に
+#     上流の yarn.lock で確かめた)。
+#
+#     届かない理由: 脆弱な readStopNodeData() に入るのは、stopNodes を設定したときだけ。wabac が
+#     XMLParser を使うのは DASH manifest の書き換え (src/rewrite/rewriteVideo.ts) の 1 箇所で、
+#     その xmlOpts は stopNodes を設定しない (配っている sw.js の中でも既定の `stopNodes:[]`)。
+#
+#     外す条件: replaywebpage を上げるとき (capture-player と同じ版にそろえて上げる。CAPTURE-102 の
+#     後)。lockfile の側は 2.5.4 で 5.12.0 に解決されるので、上げる PR でこの行を消す。配る物まで
+#     直ったかは、上げた版の上流の yarn.lock の fast-xml-parser が 5.12.0 以上かで見る。
 auditConfig:
   ignoreGhsas:
     - GHSA-gh4j-gqv2-49f6
     - GHSA-g3hv-75wg-m249
+    - GHSA-474x-hrwr-fgx4
