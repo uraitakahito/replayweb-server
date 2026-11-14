@@ -119,8 +119,9 @@ plaintext while you believe it is encrypted.
 TLS is not decoration here. **The viewer is a service worker**, and a service
 worker only registers in a secure context. Reached over plain http at a
 hostname, this image serves the page and then never opens an archive; the
-browser has simply not created `navigator.serviceWorker` at all. `localhost` is
-the other trustworthy origin, which is why the plaintext example above uses it.
+browser has simply not created `navigator.serviceWorker` at all. A loopback
+address (`127.0.0.1`, `localhost`) is the other trustworthy origin, which is
+why the plaintext examples above use `127.0.0.1`.
 
 One URL rather than a host and a bucket in two variables, because splitting
 them is unsafe under at least one orchestrator: **container-compose rewrites an
