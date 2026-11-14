@@ -41,8 +41,8 @@ ReplayWeb.page の `?source=` に渡す物。
   "title": "クロール 3f2a1b2c の合本 r3",
   "resources": [
     {
-      "name": "a4d7…_3f2a….wacz",
-      "path": "/wacz/org/acme/2026-11/a4d7…_3f2a….wacz",
+      "name": "a4d7…_3f2a….browserhive.wacz",
+      "path": "/wacz/org/acme/2026-11/a4d7…_3f2a….browserhive.wacz",
       "hash": "sha256:<WACZ の sha256>",
       "crawlId": "<crawlId>"
     }
@@ -54,7 +54,7 @@ ReplayWeb.page の `?source=` に渡す物。
       "url": "http://site.test/",
       "ts": "2026-11-05T01:03:57.957Z",
       "title": "hub",
-      "filename": "a4d7…_3f2a….wacz",
+      "filename": "a4d7…_3f2a….browserhive.wacz",
       "isSeed": true,
       "crawl_id": "<crawlId>"
     }
@@ -71,7 +71,7 @@ ReplayWeb.page の `?source=` に渡す物。
     "crawlState": "succeeded",
     "stopReason": "completed",
     "finishedAt": "2026-11-05T03:29:58.000Z",
-    "skippedResources": [{ "name": "b7e1…_3f2a….wacz", "hash": "sha256:…" }],
+    "skippedResources": [{ "name": "b7e1…_3f2a….browserhive.wacz", "hash": "sha256:…" }],
     "pagesHash": "sha256:<pages.json の sha256>"
   }
 }
@@ -84,7 +84,7 @@ ReplayWeb.page の `?source=` に渡す物。
 | `resources[].hash` | `sha256:` ＋ WACZ のファイル全体の sha256（16 進の小文字）。ReplayWeb.page は照らさない（呼び分けの名前に使う）。証拠のために載せる                                                                             |
 | `resources` の並び | **起点の頁の WACZ を先頭に**、続けて深さ・撮った時刻の順。ただし ReplayWeb.page が頁の中で見つからない物（favicon など）を探す 3 本は、この並びではなく WACZ の名前（`name`）の順で選ばれる（2.5.0 で確かめた） |
 | `pagesQueryUrl`    | `/q/` ＋ `<置き場>` ＋ `/pages`（末尾の `/` は無し）                                                                                                                                                            |
-| `initialPages`     | 一覧の 1 ページ目。25 行まで。起点の頁（深さ 0）を先頭に、深さ・時刻の順。`isSeed` は深さ 0 の頁で true。写しの行は入れない                                                                                     |
+| `initialPages`     | 一覧の 1 ページ目。25 行まで。起点の頁（深さ 0）を先頭に、深さ・時刻の順。`isSeed` は深さ 0 の頁で true。写しの行（BrowserHive WACZ の DOM の写しの行。`url` が `urn:browserhive:snapshot:…`）は入れない        |
 | `totalPages`       | `pages.json` の `pages` の数                                                                                                                                                                                    |
 | `replayBundle`     | capture-ledger の記録。ReplayWeb.page も replayweb-server も読まない（知らない欄は読み飛ばす）。ほかの欄の名前とぶつけない。欄の意味は capture-ledger の docs                                                   |
 
@@ -103,7 +103,7 @@ replayweb-server だけが読む。
       "url": "http://site.test/",
       "ts": "2026-11-05T01:03:57.957Z",
       "title": "hub",
-      "filename": "a4d7…_3f2a….wacz",
+      "filename": "a4d7…_3f2a….browserhive.wacz",
       "depth": 0,
       "stage": null,
       "keys": ["http://site.test/", "http://site.test/after-redirect"]
@@ -113,7 +113,7 @@ replayweb-server だけが読む。
       "url": "urn:browserhive:snapshot:after-load:http://site.test/",
       "ts": "2026-11-05T01:04:00.324Z",
       "title": "hub",
-      "filename": "a4d7…_3f2a….wacz",
+      "filename": "a4d7…_3f2a….browserhive.wacz",
       "depth": 0,
       "stage": "after-load",
       "keys": []
@@ -187,7 +187,7 @@ server は保管庫の `<置き場>/pages.json`（`S3_BUCKET_URL` ＋ `/` ＋ `<
       "url": "http://site.test/",
       "ts": "2026-11-05T01:03:57.957Z",
       "title": "hub",
-      "filename": "a4d7…_3f2a….wacz"
+      "filename": "a4d7…_3f2a….browserhive.wacz"
     }
   ],
   "total": 2
@@ -243,8 +243,8 @@ BrowserHive はラベルを百分率の符号で鍵に入れる（`hello world` 
 
 ```ts
 const waczPath = (key: string) => `/wacz/${key.split("/").map(encodeURIComponent).join("/")}`;
-// 鍵 org/acme/2026-11/a_c1_hello%20world.wacz
-// → /wacz/org/acme/2026-11/a_c1_hello%2520world.wacz
+// 鍵 org/acme/2026-11/a_c1_hello%20world.browserhive.wacz
+// → /wacz/org/acme/2026-11/a_c1_hello%2520world.browserhive.wacz
 ```
 
 （nginx の時代は、解いた鍵をそのまま上流へ渡し、保管庫がもう 1 度解いていた。`%XX` を含む鍵は 2 度解かれて
