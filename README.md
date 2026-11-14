@@ -38,12 +38,14 @@ Inside a stack, where the object store is reachable. BrowserHive's stack serves 
 under its name with TLS; capture-ledger's stack publishes it on the loopback:
 
 ```
-open "https://replayweb-server.browserhive/?source=/wacz/<taskId>_<correlationId>.wacz"
-open "http://127.0.0.1:8899/?source=/wacz/<taskId>_<correlationId>.wacz"
+open "https://replayweb-server.browserhive/?source=/wacz/<taskId>_<correlationId>.browserhive.wacz"
+open "http://127.0.0.1:8899/?source=/wacz/<taskId>_<correlationId>.browserhive.wacz"
 ```
 
-A capture with labels adds them (`<taskId>_<correlationId>_<label>.wacz`), and an empty
-correlationId keeps its slot (`<taskId>_.wacz`, `<taskId>__<label>.wacz`).
+A capture with labels adds them (`<taskId>_<correlationId>_<label>.browserhive.wacz`), and an empty
+correlationId keeps its slot (`<taskId>_.browserhive.wacz`, `<taskId>__<label>.browserhive.wacz`).
+BrowserHive v31.0.0 adds the mark `.browserhive.` to the name; a WACZ written by v30.2.0 or
+earlier keeps the name it was given (`<taskId>_<correlationId>.wacz`).
 
 A crawl as one archive, from the replay bundle capture-ledger writes next to its
 WACZ (the format is [docs/replay-bundle.md](docs/replay-bundle.md)):
